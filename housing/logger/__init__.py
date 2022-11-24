@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from housing.util.util import *
 import os
 
 LOG_DIR = 'housing_logs'

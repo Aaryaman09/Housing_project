@@ -2,4 +2,4 @@ from housing.config.configuration import Configuration
 
 config = Configuration()
 
-print(config.get_data_ingestion_config())
+print(config.get_model_trainer_config())

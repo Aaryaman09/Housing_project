@@ -1,4 +1,4 @@
-from housing.entity.config_entity import DataIngestionConfig,DataTransforamtionConfig,DataValidationConfig, ModelTrainerConfig, ModelEvaluationConfig, ModelPusherConfig, TrainingPipelineConfig
+from housing.entity.config_entity import DataIngestionConfig,DataTransformationConfig,DataValidationConfig, ModelTrainerConfig, ModelEvaluationConfig, ModelPusherConfig, TrainingPipelineConfig
 from housing.util.util import read_yaml_file
 from housing.exception import HousingException
 from housing.constant import *
@@ -46,16 +46,89 @@ class Configuration:
             raise HousingException(e,sys) from e
 
     def get_data_validation_config(self)->DataValidationConfig:
-        pass
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            data_validation_artifact_dir = os.path.join(artifact_dir, DATA_VALIDATION_ARTIFACT_DIR, self.time_stamp)
+            data_validation_info = self.config_info[DATA_VALIDATION_CONFIG_KEY]
 
-    def get_data_transformation_config(self)->DataTransforamtionConfig:
-        pass
+            schema_dir = os.path.join(ROOT_DIR,data_validation_info[DATA_VALIDATION_SCHEMA_DIR_KEY]) # YAML files are always in outer config, so used ROOT_DIR
+
+            schema_file_path = os.path.join(schema_dir,data_validation_info[DATA_VALIDATION_SCHEMA_FILE_NAME_KEY])
+
+            report_file_name = os.path.join(data_validation_artifact_dir,data_validation_info[DATA_VALIDATION_REPORT_FILE_NAME_KEY])
+
+            report_page_file_name = os.path.join(data_validation_artifact_dir,data_validation_info[DATA_VALIDATION_REPORT_PAGE_FILE_NAME_KEY])
+
+            data_validation_config = DataValidationConfig(
+                schema_file_path=schema_file_path,
+                report_file_name=report_file_name,
+                report_page_file_name=report_page_file_name
+            )
+            logging.info(f"Data Validation config: {data_validation_config}")
+            return data_validation_config
+        except Exception as e:
+            raise HousingException(e,sys) from e
+
+    def get_data_transformation_config(self)->DataTransformationConfig:
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            data_transformation_artifact_dir = os.path.join(artifact_dir, DATA_TRANSFORMATION_ARTIFACT_DIR, self.time_stamp)
+            data_transformation_info = self.config_info[DATA_TRANSFORMATION_CONFIG_KEY]
+
+            add_bedroom_per_room = data_transformation_info[DATA_TRANSFORMATION_ADD_BEDROOM_PER_ROOM_KEY]
+
+            transformed_dir = os.path.join(data_transformation_artifact_dir,data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_DIR_KEY])
+
+            transformed_train_dir = os.path.join(transformed_dir,data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_TRAIN_DIR_KEY])
+
+            transformed_test_dir = os.path.join(transformed_dir,data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_TEST_DIR_KEY])
+
+            preprocessing_dir = os.path.join(data_transformation_artifact_dir,data_transformation_info[DATA_TRANSFORMATION_PREPROCESSING_DIR_KEY])
+
+            preprocessed_object_file_path = os.path.join(preprocessing_dir,data_transformation_info[DATA_TRANSFORMATION_PREPROCESSED_OBJECT_FILE_NAME_KEY])
+
+            data_transformation_config = DataTransformationConfig(
+                add_bedroom_per_room=add_bedroom_per_room,
+                transformed_train_dir=transformed_train_dir,
+                transformed_test_dir=transformed_test_dir,
+                preprocessed_object_file_path=preprocessed_object_file_path
+            )
+            logging.info(f"Data Validation config: {data_transformation_config}")
+            return data_transformation_config
+        except Exception as e:
+            raise HousingException(e,sys) from e
 
     def get_model_trainer_config(self)->ModelTrainerConfig:
-        pass
+        try:
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            model_trainer_artifact_dir = os.path.join(artifact_dir, MODEL_TRAINER_ARTIFACT_DIR_KEY, self.time_stamp)
+            model_trainer_info = self.config_info[MODEL_TRAINER_CONFIG_KEY]
+
+            trained_model_dir = os.path.join(model_trainer_artifact_dir,model_trainer_info[MODEL_TRAINER_TRAINED_MODEL_DIR_KEY])
+
+            trained_model_file_path = os.path.join(trained_model_dir,model_trainer_info[MODEL_TRAINER_MODEL_FILE_NAME_KEY])
+
+            base_accuracy = model_trainer_info[MODEL_TRAINER_BASE_ACCURACY_KEY]
+
+            model_config_dir = os.path.join(ROOT_DIR,model_trainer_info[MODEL_TRAINER_MODEL_CONFIG_DIR_KEY]) # YAML files are always in outer config, so used ROOT_DIR
+
+            model_config_file_path = os.path.join(model_config_dir,model_trainer_info[MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY])
+
+            model_trainer_config = ModelTrainerConfig(
+                trained_model_file_path=trained_model_file_path,
+                base_accuracy=base_accuracy,
+                model_config_file_path=model_config_file_path
+            )
+            logging.info(f"Data Validation config: {model_trainer_config}")
+            return model_trainer_config
+        except Exception as e:
+            raise HousingException(e,sys) from e
 
     def get_model_evaluation_config(self)->ModelEvaluationConfig:
-        pass
+        try:
+            pass
+        except Exception as e:
+            raise HousingException(e,sys) from e
 
     def get_model_pusher_config(self)->ModelPusherConfig:
         pass

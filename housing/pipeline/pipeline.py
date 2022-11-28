@@ -22,8 +22,24 @@ class Pipeline:
         except Exception as e:
             raise HousingException(e,sys) from e
 
+    def start_data_validation(self):
+        pass
+
+    def start_data_transformation(self):
+        pass
+
+    def start_model_trainer(self):
+        pass
+
+    def start_model_evaluation(self):
+        pass
+
+    def start_model_pusher(self):
+        pass        
+
     def run_pipeline(self):
         try:
-            pass
+            # Data Ingestion
+            data_ingestion_artifact = self.start_data_ingestion()
         except Exception as e:
             raise HousingException(e,sys) from e       

@@ -40,7 +40,7 @@ class Configuration:
                 ingested_train_dir=ingested_train_dir,
                 ingested_test_dir=ingested_test_dir
             )
-            logging.info(f"Data Ingestion config: {data_ingestion_config}")
+            logging.info(f"Data Ingestion config : {data_ingestion_config}")
             return data_ingestion_config
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -64,7 +64,7 @@ class Configuration:
                 report_file_name=report_file_name,
                 report_page_file_name=report_page_file_name
             )
-            logging.info(f"Data Validation config: {data_validation_config}")
+            logging.info(f"Data Validation config : {data_validation_config}")
             return data_validation_config
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -93,7 +93,7 @@ class Configuration:
                 transformed_test_dir=transformed_test_dir,
                 preprocessed_object_file_path=preprocessed_object_file_path
             )
-            logging.info(f"Data Transformation config: {data_transformation_config}")
+            logging.info(f"Data Transformation config : {data_transformation_config}")
             return data_transformation_config
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -119,7 +119,7 @@ class Configuration:
                 base_accuracy=base_accuracy,
                 model_config_file_path=model_config_file_path
             )
-            logging.info(f"Model Trainer config: {model_trainer_config}")
+            logging.info(f"Model Trainer config : {model_trainer_config}")
             return model_trainer_config
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -138,7 +138,7 @@ class Configuration:
                 model_evaluation_file_path=model_evaluation_file_path,
                 time_stamp=time_stamp
             )
-            logging.info(f"Data Evaluation config: {model_evaluation_config}")
+            logging.info(f"Data Evaluation config : {model_evaluation_config}")
             return model_evaluation_config
         except Exception as e:
             raise HousingException(e,sys) from e
@@ -153,7 +153,7 @@ class Configuration:
             model_pusher_config = ModelPusherConfig(
                 export_dir_path=export_dir_path
             )
-            logging.info(f"Model pusher config {model_pusher_config}")
+            logging.info(f"Model pusher config : {model_pusher_config}")
             return model_pusher_config
         except Exception as e:
             raise HousingException(e,sys) from e

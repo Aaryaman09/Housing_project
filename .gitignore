@@ -104,10 +104,10 @@ celerybeat.pid
 # Environments
 .env
 .venv
-.project_one
+.housing_env
 env/
 venv/
-project_one/
+housing_env/
 ENV/
 env.bak/
 venv.bak/

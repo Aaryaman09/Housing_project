@@ -11,7 +11,8 @@ class Configuration:
         try:
             self.config_info = read_yaml_file(file_path=config_file_path)
             self.time_stamp = current_time_stamp
-            self.training_pipeline_config = self.get_training_pipeline_config()        
+            self.training_pipeline_config = self.get_training_pipeline_config()   
+                 
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -42,6 +43,7 @@ class Configuration:
             )
             logging.info(f"Data Ingestion config : {data_ingestion_config}")
             return data_ingestion_config
+
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -66,6 +68,7 @@ class Configuration:
             )
             logging.info(f"Data Validation config : {data_validation_config}")
             return data_validation_config
+
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -95,6 +98,7 @@ class Configuration:
             )
             logging.info(f"Data Transformation config : {data_transformation_config}")
             return data_transformation_config
+
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -121,6 +125,7 @@ class Configuration:
             )
             logging.info(f"Model Trainer config : {model_trainer_config}")
             return model_trainer_config
+
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -140,6 +145,7 @@ class Configuration:
             )
             logging.info(f"Data Evaluation config : {model_evaluation_config}")
             return model_evaluation_config
+
         except Exception as e:
             raise HousingException(e,sys) from e
 

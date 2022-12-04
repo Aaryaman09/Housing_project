@@ -1,10 +1,13 @@
 from housing.entity.config_entity import DataIngestionConfig
 from housing.exception import  HousingException
 from housing.logger import logging
+from housing.constant import *
 from housing.entity.artifact_entity import DataIngestionArtifact
 from sklearn.model_selection import StratifiedShuffleSplit 
 import sys,os
 import tarfile
+from pathlib import Path
+import shutil
 import pandas as pd
 import numpy as np
 from six.moves import urllib
@@ -15,7 +18,7 @@ class DataIngestion:
             logging.info(f"{'='*20}Data Ingestion log started{'='*20}")
             self.data_ingestion_config = data_ingestion_config  
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise HousingException(e,sys) from e        
 
     def download_housing_data(self)->str:
         try:
@@ -35,7 +38,14 @@ class DataIngestion:
             tgz_file_path = os.path.join(tgz_download_dir,housing_file_name)
 
             logging.info(f"Downloading file from: [{download_url}] into: [{tgz_file_path}]")
-            urllib.request.urlretrieve(download_url,tgz_file_path)
+            try:
+                urllib.request.urlretrieve(download_url,tgz_file_path)
+            except:
+                tgz_local_file = os.path.join(ROOT_DIR,TGZ_FOLDER_KEY,TGZ_FILE_KEY)
+                logging.info(f"Githb Raw is not functional, transferring locally saved TGZ file from dir: [{tgz_local_file}]")
+                shutil.copy(tgz_local_file, tgz_file_path) 
+                logging.info(f"Locally saved TGZ file transferred successfully.")     
+
             logging.info(f"File :[{tgz_file_path}] has been download successfully")
             return tgz_file_path
         except Exception as e:

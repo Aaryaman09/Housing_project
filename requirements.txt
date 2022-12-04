@@ -6,4 +6,6 @@ numpy
 PyYAML
 urllib3
 scikit-learn
+evidently
+pathlib
 -e .

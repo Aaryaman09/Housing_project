@@ -8,4 +8,5 @@ urllib3
 scikit-learn
 evidently
 pathlib
+dill
 -e .

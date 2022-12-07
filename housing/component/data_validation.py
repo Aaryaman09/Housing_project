@@ -6,7 +6,6 @@ from housing.logger import logging
 from housing.exception import HousingException
 from housing.entity.config_entity import DataValidationConfig
 from housing.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
-
 from evidently.model_profile import Profile
 from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
@@ -131,7 +130,7 @@ class DataValidation:
                 message="Data Validation performed Successfully"
             )
             logging.info(f"Data Validation artifact: {data_validation_artifact}")
-
+            return data_validation_artifact
         except Exception as e:
             raise HousingException(e,sys) from e
 

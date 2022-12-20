@@ -7,8 +7,9 @@ from housing.component.data_validation import DataValidation
 from housing.component.data_transformation import DataTransformation
 from housing.component.model_trainer import ModelTrainer
 from housing.component.model_evaluation import ModelEvaluation
+from housing.component.model_pusher import ModelPusher
 from housing.entity.config_entity import DataIngestionConfig,DataValidationConfig,DataTransformationConfig,ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig
-from housing.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,ModelTrainerArtifact,ModelEvaluationArtifact
+from housing.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,ModelTrainerArtifact,ModelEvaluationArtifact,ModelPusherArtifact
 
 class Pipeline:
 
@@ -60,7 +61,6 @@ class Pipeline:
                                 data_validation_artifact:DataValidationArtifact,
                                 model_trainer_artifact:ModelTrainerArtifact) -> ModelEvaluationArtifact:
         try:
-            logging.info(f"data_ingestion_artifact: {data_ingestion_artifact}")
             model_evaluation = ModelEvaluation(model_evaluation_config=self.config.get_model_evaluation_config(),
                                                 data_ingestion_artifact=data_ingestion_artifact,
                                                 data_validation_artifact=data_validation_artifact,
@@ -69,9 +69,11 @@ class Pipeline:
         except Exception as e:
             raise HousingException(e,sys) from e
 
-    def start_model_pusher(self):
+    def start_model_pusher(self,model_evaluation_artifact:ModelEvaluationArtifact)->ModelPusherArtifact:
         try:
-            pass
+            model_pusher = ModelPusher(model_pusher_config = self.config.get_model_pusher_config(),
+                            model_evaluation_artifact=model_evaluation_artifact)
+            return model_pusher.initiate_model_pusher()                
         except Exception as e:
             raise HousingException(e,sys) from e       
 
@@ -98,6 +100,13 @@ class Pipeline:
                 data_validation_artifact=data_validation_artifact,
                 model_trainer_artifact=model_trainer_artifact
                 )    
+            # Model Pusher 
+            if model_evaluation_artifact.is_model_accepted:
+                model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
+                logging.info(f'Model pusher artifact: {model_pusher_artifact}')
+            else:
+                logging.info("Trained model rejected.")
+            logging.info("Pipeline completed.")    
 
         except Exception as e:
             raise HousingException(e,sys) from e       
